@@ -67,55 +67,53 @@ def stop(servername,entityType):
 #	check if the managed server is starting
 #	@param servername: the name of the server to start
 def is_starting(servername):
-	flag = false
-	servers = cmo.getServers()
-	for server in servers:
-		if server.getName() == servername:
-			cd('/ServerLifeCycleRuntimes/'+servername)
-			serverState = server.getState()
-			if serverState == "STARTING":
-				flag=true
-				break
-	return flag
+	return hasState(servername,"STARTING")
 
 #	check if the managed server is started
 #	@param servername: the name of the server to start
 def is_stopped(servername):
-	flag = false
-	servers = cmo.getServers()
-	for server in servers:
-		if server.getName() == servername:
-			cd('/ServerLifeCycleRuntimes/'+servername)
-			serverState = server.getState()
-			if serverState == "SHUTDOWN":
-				flag=true
-				break
-	return flag
-
+	return hasState(servername,"SHUTDOWN")
 
 #	Check if the managed server is running
 #	@param servername: the name of the server to start
 def is_running(servername):
+	return hasState(servername,"RUNNING")
+
+#	Check if the server is in given state
+#	@param servername the name of the server
+#	@param state a server state
+def hasState(servername,state):
 	flag = false
+	serverConfig()
 	servers = cmo.getServers()
+	domainRuntime()
 	for server in servers:
 		if server.getName() == servername:
 			cd('/ServerLifeCycleRuntimes/'+servername)
-			serverState = server.getState()
-			if serverState == "RUNNING":
+			serverState = cmo.getState()
+			if serverState == state:
 				flag=true
 				break
+
+	serverConfig()
 	return flag
 
 def is_available(address,port):
+	flag = false
 	try:
-		s = socket.socket()
-		s.connect((address, int(port)))
-		s.shutdown(SHUT_RD)
+		s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+		res=s.connect_ex((address, int(port)))
+		if res == 0:
+			flag = true
+			print 'The port '+port+ ' is already used on address '+ address
+		else:
+			flag = false
+			print 'The port '+port+ ' is not used on address '+ address
 		s.close()
-		return true
 	except:
-		return false
+		print '[ERROR] Cannot detect if port '+port+ ' is available on address '+address
+	
+	return flag
 
 
 #	Deploy an application to a managed server
@@ -148,8 +146,6 @@ def undeploy(appName):
 		print '[ERROR]	: Application '+appName+' is unsuccessfully undeployed.'
 		print '[ERROR]	message : '+progress.getMessage()
 		print '[ERROR]	status 	: '+progress.printStatus()
-	
-
 
 def connectNM():
 	# connect to the current node manager
@@ -165,9 +161,11 @@ def startNM():
 def startAdminServer():
 	# Error: java.rmi.NoSuchObjectException: The object identified by: '31' could not be found.  Either it was has not been exported or it has been collected by the distributed garbage collector.
 	# Solve: remove ADMIN_URL props
-	prps = makePropertiesObject("Username=weblogic;Password=webl0gic;weblogic.ListenPort=7001")
+	# nmStart('AdminServer',domainDir='/opt/devtools/server/weblogic/user_project/domains/test_dom')
+	prps = makePropertiesObject("Username="+credentialConst.USER_NAME+";Password="+credentialConst.PASSWORD+";weblogic.ListenPort="+const.WLS_ADMIN_PORT)
 	if not is_available(const.WLS_ADMIN_HOST,const.WLS_ADMIN_PORT):
 		nmStart(const.WLS_ADMIN_SERVER_NAME,domainDir=const.APP_DOMAIN_DIR,props=prps)
+		nmDisconnect()
 		connectAdminServer()
 
 def connectAdminServer():
@@ -205,11 +203,6 @@ if __name__ == "main":
 	undeploy(const.APP_NAME)
 	deploy(const.APP_NAME,const.APP_DEPLOY_PATH_FROM)
 	start(const.APP_SERVER_NAME,const.TYPE_SERVER,const.WLS_ADMIN_T3_URL)
-
-	# disconnect from node manager
-	nmDisconnect()
-	# stop node manager
-	stopNodeManager()
 
 	print ''
 	print '======================================================================'
