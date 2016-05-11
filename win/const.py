@@ -9,7 +9,7 @@
 
 
 APP_NAME='myApp'
-APP_DEPLOY_PATH_FROM='C:/Users/n.razafindrabekoto/Documents/mydoc/devtools/wls_domain/cleva_deploy'
+APP_DEPLOY_PATH_FROM='C:/Users/n.razafindrabekoto/Documents/mydoc/devtools/wls_domain/cleva_deploy/myApp.war'
 APP_SERVER_NAME='cleva1'
 APP_DOMAIN_NAME='Cleva_dom'
 APP_DOMAIN_DIR='C:/Users/n.razafindrabekoto/Documents/mydoc/devtools/wls_domain/Cleva_dom'

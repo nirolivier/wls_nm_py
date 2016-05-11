@@ -1,3 +1,12 @@
+#   ================================================================
+#   This script contains all constants used to connect to the managed
+#   server.
+#   
+#   Author:     Razafindrabekoto Nirina Olivier
+#   Date:        09/05/2016
+#   Version:    1.0
+#   ===============================================================
+
 APP_NAME='myApp'
 APP_DEPLOY_PATH_FROM='/opt/devtools/server/weblogic/user_project/deploy/myApp.war'
 APP_SERVER_NAME='myServer'
