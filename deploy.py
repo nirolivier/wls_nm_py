@@ -105,13 +105,13 @@ def is_available(address,port):
 		res=s.connect_ex((address, int(port)))
 		if res == 0:
 			flag = true
-			print 'The port '+port+ ' is already used on address '+ address
+			print 'The port '+str(port)+ ' is already used on address '+ address
 		else:
 			flag = false
-			print 'The port '+port+ ' is not used on address '+ address
+			print 'The port '+str(port)+ ' is not used on address '+ address
 		s.close()
 	except:
-		print '[ERROR] Cannot detect if port '+port+ ' is available on address '+address
+		print '[ERROR] Cannot detect if port '+str(port)+ ' is available on address '+address
 	
 	return flag
 
@@ -120,7 +120,9 @@ def is_available(address,port):
 #	@param appName: the name of the deployed application
 #	@param appPath: the path of the application to deploy
 def deploy(appName, path):
+	print ''
 	print 'Deploying the application ' + appName + ' from '+path
+	print ''
 	print '....'
 	# call wlst command
 	progress = deploy(appName, path, timeout=0,Upload=false)
@@ -136,16 +138,22 @@ def deploy(appName, path):
 #	Undeploy an application to a managed server
 #	@param appName: the name of the application to undeploy
 def undeploy(appName):
+	print ''
 	print 'Undeploying the application ' + appName
+	print ''
 	print '....'
-	progress = undeploy(appName,timeout=0)
-	if progress.isCompleted():
-		print '[OK]	: Application '+appName+' is successfully undeployed'
-		progress.printStatus()
-	elif progress.isFailed():
-		print '[ERROR]	: Application '+appName+' is unsuccessfully undeployed.'
-		print '[ERROR]	message : '+progress.getMessage()
-		print '[ERROR]	status 	: '+progress.printStatus()
+	try:
+		progress = undeploy(appName,timeout=0)
+		if progress.isCompleted():
+			print '[OK]	: Application '+appName+' is successfully undeployed'
+			progress.printStatus()
+		elif progress.isFailed():
+			print '[ERROR]	: Application '+appName+' is unsuccessfully undeployed.'
+			print '[ERROR]	message : '+progress.getMessage()
+			print '[ERROR]	status 	: '+progress.printStatus()
+	except:
+		print '[ERROR]	: Cannot undeploy '+appName
+	
 
 def connectNM():
 	# connect to the current node manager
@@ -162,7 +170,7 @@ def startAdminServer():
 	# Error: java.rmi.NoSuchObjectException: The object identified by: '31' could not be found.  Either it was has not been exported or it has been collected by the distributed garbage collector.
 	# Solve: remove ADMIN_URL props
 	# nmStart('AdminServer',domainDir='/opt/devtools/server/weblogic/user_project/domains/test_dom')
-	prps = makePropertiesObject("Username="+credentialConst.USER_NAME+";Password="+credentialConst.PASSWORD+";weblogic.ListenPort="+const.WLS_ADMIN_PORT)
+	prps = makePropertiesObject("Username="+credentialConst.USER_NAME+";Password="+credentialConst.PASSWORD+";weblogic.ListenPort="+str(const.WLS_ADMIN_PORT))
 	if not is_available(const.WLS_ADMIN_HOST,const.WLS_ADMIN_PORT):
 		nmStart(const.WLS_ADMIN_SERVER_NAME,domainDir=const.APP_DOMAIN_DIR,props=prps)
 		nmDisconnect()
