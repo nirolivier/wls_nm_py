@@ -1,5 +1,5 @@
 APP_NAME='myApp'
-APP_DEPLOY_PATH_FROM='/opt/devtools/server/weblogic/user_project/deploy'
+APP_DEPLOY_PATH_FROM='/opt/devtools/server/weblogic/user_project/deploy/myApp.war'
 APP_SERVER_NAME='myServer'
 APP_DOMAIN_NAME='test_dom'
 APP_DOMAIN_DIR='/opt/devtools/server/weblogic/user_project/domains/test_dom'
