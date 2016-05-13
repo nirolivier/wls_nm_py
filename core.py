@@ -238,7 +238,16 @@ def currentMilliSecond():
 	return long(round(time_.time() * 1000))  
 
 def prepareConnection():
-	
+	redirect(const.APP_DEPLOY_LOG)
+
+	# try connect to running node manager
+	try:
+		connectNM()
+	 	nmDisconnect()
+	except:
+		print 'Node Manager is not running. Starting Node Manager and retrying to connect...'
+		startNM()
+		
 	# try connect to weblogic server
 	try:
 		connectAdminServer()
