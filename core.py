@@ -25,11 +25,9 @@ def startMgServer(servername,types,url):
 	print "Starting the managed server " + servername + " with type "+types+" by connection to server instance "+url
 	print "..."
 	if not url and url is not None:
-		start(servername, types, url, block='false')		
+		start(servername, types, url, block='true')		
 	else:
-		start(servername, types, block='false')
-
-	print 'State :'+ myServerTask.getStatus()
+		start(servername, types, block='true')
 
 
 #	Starts the application
@@ -93,7 +91,7 @@ def stopMgServer(servername,entityType):
 	print ''
 
 	if is_running(servername):
-		shutdown(servername, entityType, ignoreSessions='false', timeOut=0, block='false')
+		shutdown(servername, entityType, ignoreSessions='false', timeOut=0, block='true')
 		print '[OK]	: Server '+servername+' is successfully stopped.'
 	else:
 		print '[OK]	: Server '+servername+' is already stopped.'
@@ -155,13 +153,13 @@ def is_available(address,port):
 #	deploy('myApp', '/opt/devtools/server/weblogic/user_project/deploy', targets='myServer',timeout=0)
 #	@param appName: the name of the deployed application
 #	@param appPath: the path of the application to deploy
-def deployApp(appName, path,servername):
+def deployApp(appName, deploypath,servername):
 	print ''
-	print 'Deploying the application ' + appName + ' from '+path
+	print 'Deploying the application ' + appName + ' from '+deploypath
 	print ''
 	print '....'	
 
-	progress = deploy(appName, path, targets=servername,timeout=0)
+	progress = deploy(appName, deploypath, targets=servername,timeout=0)
 	if progress.isCompleted():	
 		print '[OK]	: Application '+appName+' is successfully deployed.'
 		progress.printStatus()
@@ -227,7 +225,7 @@ def startAdminServer():
 		connectNM()
 		nmStart(const.WLS_ADMIN_SERVER_NAME,domainDir=const.APP_DOMAIN_DIR,props=prps)
 		nmDisconnect()
-		
+
 
 def connectAdminServer():
 	# connect('weblogic', 'webl0gic','t3://localhost:7001')

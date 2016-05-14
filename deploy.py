@@ -10,7 +10,7 @@
 import string
 import const
 
-execfile('./core.py')
+execfile('core.py')
 
 
 #	Program entry point.
