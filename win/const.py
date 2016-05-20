@@ -7,7 +7,6 @@
 #   Version:    1.0
 #   ===============================================================
 
-
 APP_NAME='myApp'
 APP_DEPLOY_PATH_FROM='C:/Users/n.razafindrabekoto/Documents/mydoc/devtools/wls_domain/cleva_deploy/myApp.war'
 APP_SERVER_NAME='cleva1'

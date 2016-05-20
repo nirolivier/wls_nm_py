@@ -25,7 +25,7 @@ if __name__ == "main":
 	
 	print ''
 	print '======================================================================'
-	print 'End of server stop process.'
+	print 'Server '+const.APP_SERVER_NAME+' is successfully stopped.'
 	print '======================================================================'
 	print ''
 

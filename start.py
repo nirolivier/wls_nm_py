@@ -23,10 +23,10 @@ if __name__ == "main":
 	prepareConnection()
 	stopMgServer(const.APP_SERVER_NAME,const.TYPE_SERVER)
 	startMgServer(const.APP_SERVER_NAME,const.TYPE_SERVER,const.WLS_ADMIN_T3_URL)
-
+	
 	print ''
 	print '======================================================================'
-	print 'End of server start process.'
+	print 'Server '+ const.APP_SERVER_NAME + 'is successfully started.'
 	print '======================================================================'
 	print ''
 
